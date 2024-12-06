@@ -1,30 +1,46 @@
-// This is a basic Flutter widget test.
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:o4_tictactoe/ai.dart';
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-
-import 'package:o4_tictactoe/main.dart';
-
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    // await tester.pumpWidget(const MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
-}
+// import 'package:o4_tictactoe/game_logic.dart';
+//
+// void main() {
+//   group('GameLogic', () {
+//     test('Проверка победы по горизонтали', () {
+//       var game = GameLogic();
+//       game.playMove(0, 0);
+//       game.playMove(1, 0);
+//       game.playMove(0, 1);
+//       game.playMove(1, 1);
+//       game.playMove(0, 2);
+//       expect(game.winner, 'X');
+//     });
+//
+//     test('Проверка ничьей', () {
+//       var game = GameLogic();
+//       game.playMove(0, 0);
+//       game.playMove(0, 1);
+//       game.playMove(0, 2);
+//       game.playMove(1, 0);
+//       game.playMove(1, 1);
+//       game.playMove(1, 2);
+//       game.playMove(2, 0);
+//       game.playMove(2, 1);
+//       game.playMove(2, 2);
+//       expect(game.winner, 'N');
+//     });
+//   });
+//
+//   group('AI', () {
+//     test('AI должен выбирать ход', () {
+//       var ai = AI();
+//       var board = [
+//         [null, null, null],
+//         [null, null, null],
+//         [null, null, null],
+//       ];
+//       var move = ai.getMove(board);
+//       expect(move.containsKey('row'), true);
+//       expect(move.containsKey('col'), true);
+//     });
+//   });
+// }

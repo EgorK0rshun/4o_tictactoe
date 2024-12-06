@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'game_logic.dart';
 import 'statistics.dart';
+import 'ai.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,6 +29,8 @@ class TicTacToeGame extends StatefulWidget {
 class _TicTacToeGameState extends State<TicTacToeGame> {
   GameLogic gameLogic = GameLogic();
   Statistics statistics = Statistics();
+  AI ai = AI();
+  bool isBotEnabled = false; // Флаг для активации бота
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +51,7 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
           _buildStatistics(),
           _buildGameBoard(),
           _buildGameStatus(),
+          _buildBotToggle(),
         ],
       ),
     );
@@ -111,6 +115,8 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
       gameLogic.playMove(row, col);
       if (gameLogic.isGameOver()) {
         _updateStatistics();
+      } else if (isBotEnabled && gameLogic.currentPlayer == 'O') {
+        _botMove();
       }
     });
   }
@@ -143,5 +149,32 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
       }
     }
     return Text('Ход игрока: ${gameLogic.currentPlayer}', style: TextStyle(fontSize: 20));
+  }
+
+  // Переключение включения бота
+  Widget _buildBotToggle() {
+    return SwitchListTile(
+      title: Text('Играть с ботом'),
+      value: isBotEnabled,
+      onChanged: (bool value) {
+        setState(() {
+          isBotEnabled = value;
+          gameLogic.resetBoard();
+        });
+      },
+    );
+  }
+
+  // Ход бота
+  void _botMove() {
+    Future.delayed(Duration(milliseconds: 500), () {
+      var move = ai.getMove(gameLogic.board);
+      setState(() {
+        gameLogic.playMove(move['row'], move['col']);
+        if (gameLogic.isGameOver()) {
+          _updateStatistics();
+        }
+      });
+    });
   }
 }
