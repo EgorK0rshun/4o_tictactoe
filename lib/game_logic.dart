@@ -1,51 +1,82 @@
 class GameLogic {
-  List<List<String?>> board;
-  String currentPlayer;
+  // Доска для игры
+  List<List<String?>> board = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+  ];
+
+  // Текущий игрок (X или O)
+  String currentPlayer = 'X';
+
+  // Победитель
   String? winner;
 
-  GameLogic()
-      : board = List.generate(3, (_) => List.generate(3, (_) => null)),
-        currentPlayer = 'X',
-        winner = null;
-
-  // Игровая логика, смена игрока и проверка победы
+  // Метод для обработки хода игрока
   void playMove(int row, int col) {
-    if (board[row][col] != null || winner != null) return;
-
-    board[row][col] = currentPlayer;
-    if (checkWin(row, col)) {
-      winner = currentPlayer;
-    } else if (board.every((row) => row.every((cell) => cell != null))) {
-      winner = 'N'; // Ничья
-    } else {
+    // Проверяем, что ячейка пуста
+    if (board[row][col] == null && winner == null) {
+      board[row][col] = currentPlayer;
+      // Меняем текущего игрока после хода
       currentPlayer = currentPlayer == 'X' ? 'O' : 'X';
     }
+
+    // Проверка победителя после каждого хода
+    winner = _checkWinner();
+  }
+
+  // Метод для сброса доски
+  void resetBoard() {
+    board = [
+      [null, null, null],
+      [null, null, null],
+      [null, null, null],
+    ];
+    winner = null;
+    currentPlayer = 'X';
   }
 
   // Проверка на победу
-  bool checkWin(int row, int col) {
-    // Проверка строки
-    if (board[row].every((cell) => cell == currentPlayer)) return true;
+  String? _checkWinner() {
+    // Проверяем строки, столбцы и диагонали
+    for (int i = 0; i < 3; i++) {
+      if (board[i][0] != null && board[i][0] == board[i][1] && board[i][0] == board[i][2]) {
+        return board[i][0];
+      }
+      if (board[0][i] != null && board[0][i] == board[1][i] && board[0][i] == board[2][i]) {
+        return board[0][i];
+      }
+    }
 
-    // Проверка столбца
-    if (board.every((r) => r[col] == currentPlayer)) return true;
+    if (board[0][0] != null && board[0][0] == board[1][1] && board[0][0] == board[2][2]) {
+      return board[0][0];
+    }
+    if (board[0][2] != null && board[0][2] == board[1][1] && board[0][2] == board[2][0]) {
+      return board[0][2];
+    }
 
-    // Проверка диагоналей
-    if (row == col && board.every((r) => r[r.indexOf(r as String?)] == currentPlayer)) return true;
-    if (row + col == 2 && board.every((r) => r[2 - r.indexOf(r as String?)] == currentPlayer)) return true;
+    // Если нет победителя, проверяем ничью
+    if (_isBoardFull()) {
+      return 'DRAW';
+    }
 
-    return false;
+    return null;
   }
 
-  // Сброс игры
-  void resetBoard() {
-    board = List.generate(3, (_) => List.generate(3, (_) => null));
-    currentPlayer = 'X';
-    winner = null;
+  // Проверка, заполнена ли доска
+  bool _isBoardFull() {
+    for (int row = 0; row < 3; row++) {
+      for (int col = 0; col < 3; col++) {
+        if (board[row][col] == null) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
-  // Проверка завершения игры
-  bool isGameOver() => winner != null;
-
-  String getCurrentPlayer() => currentPlayer;
+  // Метод для проверки, завершена ли игра
+  bool isGameOver() {
+    return winner != null;
+  }
 }

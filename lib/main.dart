@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:o4_tictactoe/ai.dart';
 import 'game_logic.dart';
 import 'statistics.dart';
+import 'ai.dart';
 
 void main() {
   runApp(MyApp());
@@ -62,8 +62,8 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
   Widget _buildStatistics() {
     return Column(
       children: [
-        Text('Победы крестиков: ${statistics.xWins}'),
-        Text('Победы ноликов: ${statistics.oWins}'),
+        Text('Победы крестиков: ${statistics.xWins}', style: TextStyle(fontSize: 20)),
+        Text('Победы ноликов: ${statistics.oWins}', style: TextStyle(fontSize: 20)),
       ],
     );
   }
@@ -144,7 +144,10 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
   Widget _buildGameStatus() {
     if (gameLogic.isGameOver()) {
       if (gameLogic.winner != null) {
-        return Text('Победил: ${gameLogic.winner}', style: TextStyle(fontSize: 20, color: Colors.green));
+        return Text(
+          'Победил: ${gameLogic.winner}',
+          style: TextStyle(fontSize: 20, color: Colors.green),
+        );
       } else {
         return Text('Ничья!', style: TextStyle(fontSize: 20, color: Colors.orange));
       }
