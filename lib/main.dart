@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:o4_tictactoe/ai.dart';
 import 'game_logic.dart';
 import 'statistics.dart';
-import 'ai.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,7 +29,7 @@ class TicTacToeGame extends StatefulWidget {
 class _TicTacToeGameState extends State<TicTacToeGame> {
   GameLogic gameLogic = GameLogic();
   Statistics statistics = Statistics();
-  AI ai = AI(difficulty: AI.Difficulty.easy); // Изначально простой уровень
+  AI ai = AI(difficulty: Difficulty.easy); // Изначально простой уровень
   bool isBotEnabled = false; // Флаг для активации бота
 
   @override
@@ -168,16 +168,16 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
 
   // Выбор уровня сложности
   Widget _buildDifficultySelector() {
-    return DropdownButton<AI.Difficulty>(
+    return DropdownButton<Difficulty>(
       value: ai.difficulty,
-      onChanged: (AI.Difficulty? newDifficulty) {
+      onChanged: (Difficulty? newDifficulty) {
         setState(() {
           ai.difficulty = newDifficulty!;
           gameLogic.resetBoard();
         });
       },
-      items: AI.Difficulty.values.map((difficulty) {
-        return DropdownMenuItem<AI.Difficulty>(
+      items: Difficulty.values.map((difficulty) {
+        return DropdownMenuItem<Difficulty>(
           value: difficulty,
           child: Text(difficulty.toString().split('.').last),
         );
@@ -190,7 +190,7 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
     Future.delayed(Duration(milliseconds: 500), () {
       var move = ai.getMove(gameLogic.board);
       setState(() {
-        gameLogic.playMove(move['row'], move['col']);
+        gameLogic.playMove(move['row']!, move['col']!);
         if (gameLogic.isGameOver()) {
           _updateStatistics();
         }
