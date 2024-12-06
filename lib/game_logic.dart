@@ -31,8 +31,8 @@ class GameLogic {
     if (board.every((r) => r[col] == currentPlayer)) return true;
 
     // Проверка диагоналей
-    if (row == col && board.every((r) => r[r.indexOf(r)] == currentPlayer)) return true;
-    if (row + col == 2 && board.every((r) => r[2 - r.indexOf(r)] == currentPlayer)) return true;
+    if (row == col && board.every((r) => r[r.indexOf(r as String?)] == currentPlayer)) return true;
+    if (row + col == 2 && board.every((r) => r[2 - r.indexOf(r as String?)] == currentPlayer)) return true;
 
     return false;
   }
