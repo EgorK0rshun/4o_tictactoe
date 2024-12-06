@@ -170,7 +170,7 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
     Future.delayed(Duration(milliseconds: 500), () {
       var move = ai.getMove(gameLogic.board);
       setState(() {
-        gameLogic.playMove(move['row'], move['col']);
+        gameLogic.playMove(move['row']!, move['col']!);
         if (gameLogic.isGameOver()) {
           _updateStatistics();
         }
