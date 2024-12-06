@@ -29,7 +29,7 @@ class TicTacToeGame extends StatefulWidget {
 class _TicTacToeGameState extends State<TicTacToeGame> {
   GameLogic gameLogic = GameLogic();
   Statistics statistics = Statistics();
-  AI ai = AI();
+  AI ai = AI(difficulty: AI.Difficulty.easy); // Изначально простой уровень
   bool isBotEnabled = false; // Флаг для активации бота
 
   @override
@@ -52,6 +52,7 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
           _buildGameBoard(),
           _buildGameStatus(),
           _buildBotToggle(),
+          _buildDifficultySelector(),
         ],
       ),
     );
@@ -165,12 +166,31 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
     );
   }
 
+  // Выбор уровня сложности
+  Widget _buildDifficultySelector() {
+    return DropdownButton<AI.Difficulty>(
+      value: ai.difficulty,
+      onChanged: (AI.Difficulty? newDifficulty) {
+        setState(() {
+          ai.difficulty = newDifficulty!;
+          gameLogic.resetBoard();
+        });
+      },
+      items: AI.Difficulty.values.map((difficulty) {
+        return DropdownMenuItem<AI.Difficulty>(
+          value: difficulty,
+          child: Text(difficulty.toString().split('.').last),
+        );
+      }).toList(),
+    );
+  }
+
   // Ход бота
   void _botMove() {
     Future.delayed(Duration(milliseconds: 500), () {
       var move = ai.getMove(gameLogic.board);
       setState(() {
-        gameLogic.playMove(move['row']!, move['col']!);
+        gameLogic.playMove(move['row'], move['col']);
         if (gameLogic.isGameOver()) {
           _updateStatistics();
         }
